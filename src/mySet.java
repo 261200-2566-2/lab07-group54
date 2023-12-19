@@ -1,15 +1,15 @@
 import java.util.HashMap;
 
-
-public class Set<E> {
+public class mySet<E> {
     private HashMap<E,E> map;
+    private Iterator<E> iterator;
 
-    public Set() {
+    public mySet() {
         map = new HashMap<E,E>();
     }
 
     public Boolean add(E e) {
-        if(!map.containsKey(e)) {
+        if(!contains(e)) {
             map.put(e, e);
             return true;
         }
@@ -17,7 +17,7 @@ public class Set<E> {
     }
 
     public Boolean remove(E e) {
-        if(map.containsKey(e)) {
+        if(contains(e)) {
             map.remove(e);
             return true;
         }
@@ -36,11 +36,11 @@ public class Set<E> {
         return map.containsKey(e);
     }
 
-    public boolean containsAll(Set<? extends E> s) {
+    public boolean containsAll(mySet<? extends E> s) {
         return map.keySet().containsAll(s.map.keySet());
     }
 
-    public Boolean addAll(Set<? extends E> s) {
+    public Boolean addAll(mySet<? extends E> s) {
         if(!containsAll(s)) {
             map.putAll(s.map);
             return true;
@@ -48,7 +48,7 @@ public class Set<E> {
         return false;
     }
 
-    public Boolean removeAll(Set<? extends E> s) {
+    public Boolean removeAll(mySet<? extends E> s) {
         boolean modified = false;
 
         for (E element : s.map.keySet()) {
@@ -61,26 +61,28 @@ public class Set<E> {
         return modified;
     }
 
+    public Boolean retainAll(mySet<? extends E> s) { //intersection
+        boolean modified = false;
 
-
-
-
-    public static void main(String[] args) {
-        Set<Integer> myset = new Set<>();
-        Set<Integer> otset = new Set<>();
-        otset.add(1);
-        otset.add(2);
-        otset.add(3);
-        myset.addAll(otset);
-        myset.add(4);
-        myset.add(5);
-        myset.add(6);
-        myset.printSet();
-        myset.remove(1);
-        myset.printSet();
-        myset.removeAll(otset);
-        myset.printSet();
-
-
+        for (E element : s.map.keySet()) {
+            if (!map.containsKey(element)) {
+                map.remove(element);
+                modified = true;
+            }
+        }
+        return modified;
     }
+
+    public int size() {
+        return map.size();
+    }
+
+    public Boolean isEmpty() {
+        return map.isEmpty();
+    }
+
+    public Iterator<E> iterator() {
+        return iterator;
+    }
+
 }
