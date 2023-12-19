@@ -1,8 +1,8 @@
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class mySet<E> {
     private HashMap<E,E> map;
-    private Iterator<E> iterator;
 
     public mySet() {
         map = new HashMap<E,E>();
@@ -61,18 +61,6 @@ public class mySet<E> {
         return modified;
     }
 
-    public Boolean retainAll(mySet<? extends E> s) { //intersection
-        boolean modified = false;
-
-        for (E element : s.map.keySet()) {
-            if (!map.containsKey(element)) {
-                map.remove(element);
-                modified = true;
-            }
-        }
-        return modified;
-    }
-
     public int size() {
         return map.size();
     }
@@ -82,7 +70,21 @@ public class mySet<E> {
     }
 
     public Iterator<E> iterator() {
-        return iterator;
+        return map.keySet().iterator();
+    }
+
+    public Boolean retainAll(mySet<? extends E> s) { //intersection credit by CHAT GPT
+        boolean retainSuccess = false;
+
+        Iterator<E> iterator = map.keySet().iterator();
+        while (iterator.hasNext()) {
+            E element = iterator.next();
+            if (!s.map.containsKey(element)) {
+                iterator.remove();
+                retainSuccess = true;
+            }
+        }
+        return retainSuccess;
     }
 
 }
